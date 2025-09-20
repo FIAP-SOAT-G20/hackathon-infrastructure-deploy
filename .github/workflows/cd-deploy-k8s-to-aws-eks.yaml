@@ -8,7 +8,7 @@ on:
 
 env:
   AWS_REGION: us-east-1
-  CLUSTER_NAME: fiap-10soat-g21-k8s-cluster
+  CLUSTER_NAME: hackathon-eks-cluster
 
 jobs:
   kubectl:

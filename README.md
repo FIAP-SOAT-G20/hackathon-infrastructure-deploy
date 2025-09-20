@@ -65,7 +65,7 @@ Before deploying, ensure you have:
 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/) (v1.24+)
 - [AWS CLI](https://aws.amazon.com/cli/) configured with appropriate permissions
-- Access to AWS EKS cluster: `fiap-10soat-g21-k8s-cluster`
+- Access to AWS EKS cluster: `hackathon-eks-cluster`
 - [Make](https://www.gnu.org/software/make/) for using the Makefile commands
 
 ### Required AWS Permissions
@@ -301,8 +301,8 @@ kubectl top pods -n hackathon
 
 **Cluster authentication issues**
 - Verify you're using the correct cluster name
-- CI/CD uses: `fiap-10soat-g21-k8s-cluster`
-- Local development uses: `fiap-10soat-g21-k8s-cluster`
+- CI/CD uses: `hackathon-eks-cluster`
+- Local development uses: `hackathon-eks-cluster`
 - Ensure your AWS profile has appropriate permissions
 
 ### Debug Commands
