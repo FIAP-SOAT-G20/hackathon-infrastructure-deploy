@@ -13,7 +13,7 @@ help: ## Print this message
 .PHONY: aws-eks-auth
 aws-eks-auth: ## Authenticate with AWS EKS with the 10soat aws profile
 	@echo  "🟢 Authenticating with AWS EKS..."
-	aws eks update-kubeconfig --name fiap-10soat-g22-k8s-cluster --profile 10soat
+	aws eks update-kubeconfig --name fiap-10soat-g21-k8s-cluster --profile 10soat
 
 .PHONY: k8s-apply
 k8s-apply: ## Apply Kubernetes manifests
