@@ -147,8 +147,8 @@ The application uses ConfigMaps and Secrets for configuration:
 
 | Component | CPU Request | Memory Request | CPU Limit | Memory Limit |
 |-----------|-------------|----------------|-----------|--------------|
-| Video API | 100m        | 128Mi          | 500m      | 512Mi        |
-| Worker    | 100m        | 128Mi          | 500m      | 512Mi        |
+| Video API | 100m        | 128Mi          | 200m      | 256Mi        |
+| Worker    | 100m        | 128Mi          | 200m      | 256Mi        |
 
 ### Horizontal Pod Autoscaler
 
