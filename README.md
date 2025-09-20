@@ -193,7 +193,7 @@ kubectl rollout undo deployment/hackathon-video-service -n hackathon
 kubectl rollout undo deployment/hackathon-video-worker -n hackathon
 ```
 
-## � CI/CD Pipeline
+## 🚀 CI/CD Pipeline
 
 This repository includes a GitHub Actions workflow for automated deployment to AWS EKS.
 
