@@ -12,6 +12,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: video-service
+            name: hackathon-video-service
             port:
               number: 80

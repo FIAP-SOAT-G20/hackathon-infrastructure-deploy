@@ -40,7 +40,10 @@ k8s-delete: ## Delete Kubernetes resources
 .PHONY: k8s-logs
 k8s-logs: ## Show application logs
 	@echo  "🟢 Showing application logs..."
-	kubectl logs -f -l app=video-api -n $(NAMESPACE)
+	@echo  "🟢 Showing application logs for hackathon-video-service..."
+	kubectl logs -f -l app=hackathon-video-service -n $(NAMESPACE)
+	@echo  "🟢 Showing application logs for hackathon-video-consumer-worker..."
+	kubectl logs -f -l app=hackathon-video-consumer-worker -n $(NAMESPACE)
 
 .PHONY: k8s-status
 k8s-status: ## Show Kubernetes resources status
