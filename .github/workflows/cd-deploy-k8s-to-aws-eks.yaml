@@ -1,0 +1,96 @@
+name: cd/deploy-k8s-to-aws-eks
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+env:
+  AWS_REGION: us-east-1
+  CLUSTER_NAME: fiap-10soat-g21-k8s-cluster
+
+jobs:
+  kubectl:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Encode secrets to base64
+        id: base64_encode
+        run: |
+          echo "::set-output name=db_user::$(echo -n ${{ secrets.DB_USER }} | base64 -w 0)"
+          echo "::set-output name=db_password::$(echo -n ${{ secrets.DB_PASSWORD }} | base64 -w 0)"
+          echo "::set-output name=db_dsn::$(echo -n ${{ secrets.DB_DSN }} | base64 -w 0)"
+        shell: bash
+
+      - name: Update Kube Config
+        run: |
+          aws eks update-kubeconfig \
+          --name ${{ env.CLUSTER_NAME }} \
+          --region ${{ env.AWS_REGION }}
+
+      - name: Set Kubernetes envs
+        run: |
+          envsubst < configs/video-service-config.yaml > /tmp/video-service-config.yaml && mv /tmp/video-service-config.yaml configs/video-service-config.yaml
+          envsubst < configs/secrets.yaml > /tmp/secrets.yaml && mv /tmp/secrets.yaml configs/secrets.yaml
+        env:
+          DB_USER: ${{ steps.base64_encode.outputs.db_user }}
+          DB_PASSWORD: ${{ steps.base64_encode.outputs.db_password }}
+          DB_DSN: ${{ steps.base64_encode.outputs.db_dsn }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          AWS_SQS_VIDEO_UPDATED_URL: ${{ secrets.AWS_SQS_VIDEO_UPDATED_URL }}
+          AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
+          AWS_S3_BUCKET_RAW_FOLDER: ${{ secrets.AWS_S3_BUCKET_RAW_FOLDER }}
+          AWS_S3_BUCKET_PROCESSED_FOLDER: ${{ secrets.AWS_S3_BUCKET_PROCESSED_FOLDER }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+          AWS_REGION: ${{ env.AWS_REGION }}
+          CACHE_ENDPOINT: ${{ secrets.CACHE_ENDPOINT }}
+
+      - name: Validate Kubernetes manifests
+        run: |
+          echo "Validating namespace..."
+          kubectl apply --dry-run=client -f namespace.yaml
+          echo "Validating configs..."
+          kubectl apply --dry-run=client -f configs/
+          echo "Validating services..."
+          kubectl apply --dry-run=client -f services/video-service/api/
+          kubectl apply --dry-run=client -f services/video-service/worker/
+          echo "Validating ingress..."
+          kubectl apply --dry-run=client -f ingress/ingress.yaml
+        env:
+          DB_USER: ${{ steps.base64_encode.outputs.db_user }}
+          DB_PASSWORD: ${{ steps.base64_encode.outputs.db_password }}
+          DB_DSN: ${{ steps.base64_encode.outputs.db_dsn }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          AWS_SQS_VIDEO_UPDATED_URL: ${{ secrets.AWS_SQS_VIDEO_UPDATED_URL }}
+          AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
+          AWS_S3_BUCKET_RAW_FOLDER: ${{ secrets.AWS_S3_BUCKET_RAW_FOLDER }}
+          AWS_S3_BUCKET_PROCESSED_FOLDER: ${{ secrets.AWS_S3_BUCKET_PROCESSED_FOLDER }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+          AWS_REGION: ${{ env.AWS_REGION }}
+          CACHE_ENDPOINT: ${{ secrets.CACHE_ENDPOINT }}
+
+      - name: Kube Apply
+        run: |
+          kubectl apply -f namespace.yaml
+          kubectl apply -f configs/video-service-config.yaml
+          kubectl apply -f configs/secrets.yaml
+          kubectl apply -f configs/metrics.yaml
+          kubectl apply -f services/video-service/api/
+          kubectl apply -f services/video-service/worker/
+          kubectl apply -f ingress/ingress.yaml
+
