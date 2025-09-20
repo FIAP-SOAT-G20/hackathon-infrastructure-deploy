@@ -190,7 +190,7 @@ To rollback a deployment:
 
 ```bash
 kubectl rollout undo deployment/hackathon-video-service -n hackathon
-kubectl rollout undo deployment/hackathon-video-worker -n hackathon
+kubectl rollout undo deployment/hackathon-video-consumer-worker -n hackathon
 ```
 
 ## 🚀 CI/CD Pipeline
