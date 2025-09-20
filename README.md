@@ -246,7 +246,7 @@ To trigger a manual deployment:
 2. Select the `cd/deploy-k8s-to-aws-eks` workflow
 3. Click `Run workflow` and select the target branch
 
-## �📊 Monitoring
+## 📊 Monitoring
 
 ### Health Checks
 
