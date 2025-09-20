@@ -30,7 +30,7 @@ This repository contains the Kubernetes infrastructure manifests for deploying t
 - 🚀 **Scalable**: Horizontal Pod Autoscaling (HPA) configured
 - 🔒 **Secure**: Secret management and secure configuration
 - 📊 **Observable**: Metrics collection and monitoring
-- 🌐 **Load Balanced**: Ingress controller with SSL termination
+- 🌐 **Load Balanced**: Ingress controller
 - 🔄 **High Availability**: Multi-replica deployments
 
 ## 🏗️ Architecture
