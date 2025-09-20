@@ -268,7 +268,7 @@ Metrics are collected and available for monitoring:
 kubectl logs -f deployment/hackathon-video-service -n hackathon
 
 # Worker logs  
-kubectl logs -f deployment/hackathon-video-worker -n hackathon
+kubectl logs -f deployment/hackathon-video-consumer-worker -n hackathon
 
 # All pods logs
 make k8s-logs
