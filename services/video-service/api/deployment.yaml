@@ -28,8 +28,8 @@ spec:
               memory: "128Mi" # 128 mebibytes = 134,217,728 bytes = 128 * 1024 * 1024 bytes
               cpu: "100m" # 100 millicores = 0.1 cores, it means 10% of a core
             limits:
-              memory: "256Mi"
-              cpu: "200m"
+              memory: "512Mi"
+              cpu: "500m"
           readinessProbe: # verify that the container is ready to accept traffic
             httpGet:
               path: /api/v1/health/readyz
