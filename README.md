@@ -152,10 +152,10 @@ The application uses ConfigMaps and Secrets for configuration:
 
 ### Horizontal Pod Autoscaler
 
-- **Metrics**: CPU utilization
-- **Target**: 70% CPU utilization
+- **Metrics**: CPU and memory utilization
+- **Target**: 70% CPU and 70% memory utilization
 - **Min Replicas**: 1
-- **Max Replicas**: 5
+- **Max Replicas**: 2
 
 ## 🚀 Deployment
 
