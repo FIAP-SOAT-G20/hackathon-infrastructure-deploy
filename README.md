@@ -15,6 +15,7 @@
 - [Project Structure](#project-structure)
 - [Configuration](#configuration)
 - [Deployment](#deployment)
+- [CI/CD Pipeline](#cicd-pipeline)
 - [Monitoring](#monitoring)
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
@@ -64,7 +65,7 @@ Before deploying, ensure you have:
 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/) (v1.24+)
 - [AWS CLI](https://aws.amazon.com/cli/) configured with appropriate permissions
-- Access to AWS EKS cluster: `fiap-10soat-g22-k8s-cluster`
+- Access to AWS EKS cluster: `fiap-10soat-g21-k8s-cluster`
 - [Make](https://www.gnu.org/software/make/) for using the Makefile commands
 
 ### Required AWS Permissions
@@ -124,6 +125,9 @@ Your AWS profile needs the following permissions:
 │           └── hpa.yaml
 ├── ingress/                           # Ingress configuration
 │   └── ingress.yaml
+├── .github/                           # GitHub Actions workflows
+│   └── workflows/
+│       └── cd-deploy-k8s-to-aws-eks.yaml
 └── docs/                              # Documentation assets
     ├── k8s.jpg                        # Architecture diagram
     ├── k8s.drawio                     # Editable diagram
@@ -189,7 +193,60 @@ kubectl rollout undo deployment/hackathon-video-service -n hackathon
 kubectl rollout undo deployment/hackathon-video-worker -n hackathon
 ```
 
-## 📊 Monitoring
+## � CI/CD Pipeline
+
+This repository includes a GitHub Actions workflow for automated deployment to AWS EKS.
+
+### Workflow Triggers
+
+The deployment workflow runs on:
+- **Push to main branch**: Automatic deployment
+- **Manual trigger**: Via GitHub Actions UI (`workflow_dispatch`)
+
+### Workflow Steps
+
+1. **Checkout Code**: Retrieves the latest code from the repository
+2. **AWS Authentication**: Configures AWS credentials using repository secrets
+3. **Secret Encoding**: Converts sensitive data to base64 for Kubernetes secrets
+4. **EKS Configuration**: Updates kubeconfig to connect to the EKS cluster
+5. **Environment Substitution**: Replaces placeholders in config files with actual values
+6. **Manifest Validation**: Dry-run validation of all Kubernetes manifests
+7. **Deployment**: Applies all resources to the cluster
+
+### Required Repository Secrets
+
+Configure these secrets in your GitHub repository settings (`Settings` → `Secrets and variables` → `Actions`):
+
+| Secret Name | Description | Example |
+|-------------|-------------|---------|
+| `AWS_ACCESS_KEY_ID` | AWS access key for EKS access | `AKIA...` |
+| `AWS_SECRET_ACCESS_KEY` | AWS secret access key | `wJalr...` |
+| `AWS_SESSION_TOKEN` | AWS session token (if using temporary credentials) | `IQoJ...` |
+| `DB_USER` | Database username | `postgres` |
+| `DB_PASSWORD` | Database password | `secretpassword` |
+| `DB_DSN` | Database connection string | `postgres://user:pass@host:5432/dbname` |
+| `DB_NAME` | Database name | `video_service` |
+| `AWS_SQS_VIDEO_UPDATED_URL` | SQS queue URL for video updates | `https://sqs.us-east-1.amazonaws.com/...` |
+| `AWS_S3_BUCKET_NAME` | S3 bucket for video storage | `fiapx-10soat-g21` |
+| `AWS_S3_BUCKET_RAW_FOLDER` | S3 folder for raw videos | `raw` |
+| `AWS_S3_BUCKET_PROCESSED_FOLDER` | S3 folder for processed videos | `processed` |
+| `CACHE_ENDPOINT` | Redis/ElastiCache endpoint | `redis://cache.example.com:6379` |
+
+### Monitoring Deployments
+
+View deployment status in the GitHub Actions tab:
+- ✅ **Success**: All resources deployed successfully
+- ❌ **Failure**: Check logs for validation or deployment errors
+- 🟡 **In Progress**: Deployment currently running
+
+### Manual Deployment Trigger
+
+To trigger a manual deployment:
+1. Go to the `Actions` tab in your GitHub repository
+2. Select the `cd/deploy-k8s-to-aws-eks` workflow
+3. Click `Run workflow` and select the target branch
+
+## �📊 Monitoring
 
 ### Health Checks
 
@@ -242,6 +299,12 @@ kubectl describe hpa -n hackathon
 kubectl top pods -n hackathon
 ```
 
+**Cluster authentication issues**
+- Verify you're using the correct cluster name
+- CI/CD uses: `fiap-10soat-g21-k8s-cluster`
+- Local development uses: `fiap-10soat-g21-k8s-cluster`
+- Ensure your AWS profile has appropriate permissions
+
 ### Debug Commands
 
 ```bash
@@ -280,3 +343,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **FIAP PostTech 10SOAT 2025 - Group 21**
+
