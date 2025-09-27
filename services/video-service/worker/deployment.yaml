@@ -29,8 +29,8 @@ spec:
                 name: hackathon-secrets
           resources:
             requests:
-              memory: "128Mi" # 128 mebibytes = 134,217,728 bytes = 128 * 1024 * 1024 bytes
-              cpu: "100m" # 100 millicores = 0.1 cores, it means 10% of a core
+              memory: "128Mi"
+              cpu: "100m"
             limits:
               memory: "256Mi"
               cpu: "200m"
