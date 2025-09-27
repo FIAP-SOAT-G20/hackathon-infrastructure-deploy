@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hackathon-video-manager
+  namespace: hackathon
+spec:
+  type: LoadBalancer 
+  selector:
+    app: hackathon-video-manager
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+      nodePort: 30006
