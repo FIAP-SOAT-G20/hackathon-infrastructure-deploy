@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hackathon-job-starter-consumer-worker
+  namespace: hackathon
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hackathon-job-starter-consumer-worker
+  template:
+    metadata:
+      labels:
+        app: hackathon-job-starter-consumer-worker
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8081"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+        - name: hackathon-job-starter-consumer-worker
+          image: 905417995957.dkr.ecr.us-east-1.amazonaws.com/fiap-soat-g20/hackathon-job-starter-lambda:latest
+          ports:
+            - containerPort: 8081
+          envFrom:
+            - configMapRef:
+                name: hackathon-job-starter-consumer-worker-config
+            - secretRef:
+                name: hackathon-secrets
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
