@@ -2,6 +2,7 @@
 
 # Variables
 NAMESPACE=hackathon
+EKS_CLUSTER_NAME=hackathon-eks-cluster
 
 # Looks at comments using ## on targets and uses them to produce a help output.
 .PHONY: help
@@ -11,9 +12,9 @@ help: ## Print this message
 	@awk -F '::? .*## ' -- "/^[^':]+::? .*## /"' { printf "  make '$$(tput bold)'%-$(ALIGN)s'$$(tput sgr0)' - %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
 .PHONY: aws-eks-auth
-aws-eks-auth: ## Authenticate with AWS EKS with the 10soat aws profile
+aws-eks-auth: ## Authenticate with AWS EKS with the default aws profile
 	@echo  "🟢 Authenticating with AWS EKS..."
-	aws eks update-kubeconfig --name hackathon-eks-cluster --profile 10soat
+	@aws eks update-kubeconfig --name $(EKS_CLUSTER_NAME)
 
 .PHONY: k8s-apply
 k8s-apply: ## Apply Kubernetes manifests
