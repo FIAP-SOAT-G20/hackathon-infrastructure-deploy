@@ -12,12 +12,16 @@ spec:
     metadata:
       labels:
         app: hackathon-video-consumer-worker
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8081"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
         - name: hackathon-video-consumer-worker
           image: ghcr.io/fiap-soat-g20/hackathon-video-service-worker-consumer:latest
-          # ports:
-          #   - containerPort: 8081
+          ports:
+            - containerPort: 8081
           envFrom:
             - configMapRef:
                 name: hackathon-video-service-config

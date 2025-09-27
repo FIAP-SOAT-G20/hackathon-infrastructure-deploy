@@ -93,4 +93,6 @@ jobs:
           kubectl apply -f services/video-service/api/
           kubectl apply -f services/video-service/worker/
           kubectl apply -f ingress/ingress.yaml
+          kubectl apply -f services/grafana/
+          kubectl apply -f services/prometheus/
 
