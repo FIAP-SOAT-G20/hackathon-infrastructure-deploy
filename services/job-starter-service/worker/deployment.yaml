@@ -24,7 +24,7 @@ spec:
             - containerPort: 8081
           envFrom:
             - configMapRef:
-                name: hackathon-job-starter-consumer-worker-config
+                name: hackathon-job-starter-config
             - secretRef:
                 name: hackathon-secrets
           resources:
