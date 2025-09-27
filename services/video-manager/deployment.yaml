@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hackathon-video-manager
+  namespace: hackathon
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hackathon-video-manager
+  template:
+    metadata:
+      labels:
+        app: hackathon-video-manager
+    spec:
+      containers:
+        - name: hackathon-video-manager
+          image: ghcr.io/fiap-soat-g20/hackathon-video-manager:latest
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: hackathon-video-manager-config
+            - secretRef:
+                name: hackathon-secrets
+          resources:
+            requests:
+              memory: "128Mi" # 128 mebibytes = 134,217,728 bytes = 128 * 1024 * 1024 bytes
+              cpu: "100m" # 100 millicores = 0.1 cores, it means 10% of a core
+            limits:
+              memory: "512Mi"
+              cpu: "500m"

@@ -42,6 +42,7 @@ jobs:
       - name: Set Kubernetes envs
         run: |
           envsubst < configs/video-service-config.yaml > /tmp/video-service-config.yaml && mv /tmp/video-service-config.yaml configs/video-service-config.yaml
+          envsubst < configs/video-manager-config.yaml > /tmp/video-manager-config.yaml && mv /tmp/video-manager-config.yaml configs/video-manager-config.yaml
           envsubst < configs/secrets.yaml > /tmp/secrets.yaml && mv /tmp/secrets.yaml configs/secrets.yaml
         env:
           DB_USER: ${{ steps.base64_encode.outputs.db_user }}
@@ -57,6 +58,8 @@ jobs:
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
           AWS_REGION: ${{ env.AWS_REGION }}
           CACHE_ENDPOINT: ${{ secrets.CACHE_ENDPOINT }}
+          AUTH0_DOMAIN: ${{ secrets.AUTH0_DOMAIN }}
+          AUTH0_AUDIENCE: ${{ secrets.AUTH0_AUDIENCE }}
 
       - name: Validate Kubernetes manifests
         run: |
@@ -83,13 +86,17 @@ jobs:
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
           AWS_REGION: ${{ env.AWS_REGION }}
           CACHE_ENDPOINT: ${{ secrets.CACHE_ENDPOINT }}
+          AUTH0_DOMAIN: ${{ secrets.AUTH0_DOMAIN }}
+          AUTH0_AUDIENCE: ${{ secrets.AUTH0_AUDIENCE }}
 
       - name: Kube Apply
         run: |
           kubectl apply -f namespace.yaml
           kubectl apply -f configs/video-service-config.yaml
+          kubectl apply -f configs/video-manager-config.yaml
           kubectl apply -f configs/secrets.yaml
           kubectl apply -f configs/metrics.yaml
+          kubectl apply -f services/video-manager/
           kubectl apply -f services/video-service/api/
           kubectl apply -f services/video-service/worker/
           kubectl apply -f ingress/ingress.yaml
