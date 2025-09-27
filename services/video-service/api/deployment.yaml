@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: hackathon-video-service
-          image: ghcr.io/fiap-soat-g20/hackathon-video-service-api:latest
+          image: 905417995957.dkr.ecr.us-east-1.amazonaws.com/fiap-soat-g20/hackathon-video-service-api:latest
           ports:
             - containerPort: 8080
           envFrom:
