@@ -78,6 +78,8 @@ jobs:
           kubectl apply --dry-run=client -f services/video-service/worker/
           kubectl apply --dry-run=client -f services/video-manager/
           kubectl apply --dry-run=client -f services/job-starter-service/
+          kubectl apply --dry-run=client -f service-account/
+          kubectl apply --dry-run=client -f roles/
           echo "Validating ingress..."
           kubectl apply --dry-run=client -f ingress/ingress.yaml
         env:
@@ -117,4 +119,6 @@ jobs:
           kubectl apply -f ingress/ingress.yaml
           kubectl apply -f services/grafana/
           kubectl apply -f services/prometheus/
+          kubectl apply -f service-account/
+          kubectl apply -f roles/
 
