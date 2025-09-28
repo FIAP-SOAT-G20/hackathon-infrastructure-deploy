@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: hackathon-video-manager
-          image: ghcr.io/fiap-soat-g20/hackathon-video-manager:latest
+          image: 905417995957.dkr.ecr.us-east-1.amazonaws.com/fiap-soat-g20/hackathon-video-manager:latest
           ports:
             - containerPort: 3000
           envFrom:
