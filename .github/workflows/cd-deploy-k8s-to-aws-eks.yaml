@@ -43,6 +43,7 @@ jobs:
         run: |
           envsubst < configs/video-service-config.yaml > /tmp/video-service-config.yaml && mv /tmp/video-service-config.yaml configs/video-service-config.yaml
           envsubst < configs/video-manager-config.yaml > /tmp/video-manager-config.yaml && mv /tmp/video-manager-config.yaml configs/video-manager-config.yaml
+          envsubst < configs/job-starter-service-config.yaml > /tmp/job-starter-service-config.yaml && mv /tmp/job-starter-service-config.yaml configs/job-starter-service-config.yaml
           envsubst < configs/secrets.yaml > /tmp/secrets.yaml && mv /tmp/secrets.yaml configs/secrets.yaml
         env:
           DB_USER: ${{ steps.base64_encode.outputs.db_user }}
@@ -75,6 +76,8 @@ jobs:
           echo "Validating services..."
           kubectl apply --dry-run=client -f services/video-service/api/
           kubectl apply --dry-run=client -f services/video-service/worker/
+          kubectl apply --dry-run=client -f services/video-manager/
+          kubectl apply --dry-run=client -f services/job-starter-service/
           echo "Validating ingress..."
           kubectl apply --dry-run=client -f ingress/ingress.yaml
         env:
