@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hackathon-job-starter-consumer-worker
+  name: hackathon-job-starter-service
   namespace: hackathon
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hackathon-job-starter-consumer-worker
+      app: hackathon-job-starter-service
   template:
     metadata:
       labels:
-        app: hackathon-job-starter-consumer-worker
+        app: hackathon-job-starter-service
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8081"
         prometheus.io/path: "/metrics"
     spec:
       containers:
-        - name: hackathon-job-starter-consumer-worker
+        - name: hackathon-job-starter-service
           image: 905417995957.dkr.ecr.us-east-1.amazonaws.com/fiap-soat-g20/hackathon-job-starter-lambda:latest
           ports:
             - containerPort: 8081
           envFrom:
             - configMapRef:
-                name: hackathon-job-starter-config
+                name: hackathon-job-starter-service-config
             - secretRef:
                 name: hackathon-secrets
           resources:
