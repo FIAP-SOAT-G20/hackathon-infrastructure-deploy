@@ -49,6 +49,7 @@ jobs:
           DB_PASSWORD: ${{ steps.base64_encode.outputs.db_password }}
           DB_DSN: ${{ steps.base64_encode.outputs.db_dsn }}
           DB_NAME: ${{ secrets.DB_NAME }}
+          AWS_EKS_ARN: ${{ secrets.AWS_EKS_ARN }}
           AWS_SNS_VIDEO_STATUS_UPDATED_ARN: ${{ secrets.AWS_SNS_VIDEO_STATUS_UPDATED_ARN }}
           AWS_SQS_VIDEO_UPDATED_URL: ${{ secrets.AWS_SQS_VIDEO_UPDATED_URL }}
           AWS_SQS_VIDEO_UPLOADED_URL: ${{ secrets.AWS_SQS_VIDEO_UPLOADED_URL }}
@@ -81,6 +82,7 @@ jobs:
           DB_PASSWORD: ${{ steps.base64_encode.outputs.db_password }}
           DB_DSN: ${{ steps.base64_encode.outputs.db_dsn }}
           DB_NAME: ${{ secrets.DB_NAME }}
+          AWS_EKS_ARN: ${{ secrets.AWS_EKS_ARN }}
           AWS_SNS_VIDEO_STATUS_UPDATED_ARN: ${{ secrets.AWS_SNS_VIDEO_STATUS_UPDATED_ARN }}
           AWS_SQS_VIDEO_UPDATED_URL: ${{ secrets.AWS_SQS_VIDEO_UPDATED_URL }}
           AWS_SQS_VIDEO_UPLOADED_URL: ${{ secrets.AWS_SQS_VIDEO_UPLOADED_URL }}

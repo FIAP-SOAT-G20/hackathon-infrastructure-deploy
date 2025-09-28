@@ -22,3 +22,4 @@ data:
   K8S_JOB_PREFIX: "video-service-worker"
   K8S_JOB_TTL_SECONDS_AFTER_FINISHED: "20s"
   K8S_NAMESPACE: "hackathon"
+  K8S_CONTEXT_NAME: "${AWS_EKS_ARN}"
