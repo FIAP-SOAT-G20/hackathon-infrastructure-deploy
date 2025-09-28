@@ -8,4 +8,4 @@ data:
   AUTH0_DOMAIN: "${AUTH0_DOMAIN}"
   AUTH0_AUDIENCE: "${AUTH0_AUDIENCE}" # "fiapx-10soat-g21"
   APP_BASE_URL: "hackathon-video-service.hackathon.svc.cluster.local"
-  API_PORT: "3000"
+  API_PORT: "30001"
