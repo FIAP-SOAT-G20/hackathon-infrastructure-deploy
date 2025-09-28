@@ -7,5 +7,5 @@ data:
   AUTH0_SCOPE: "openid profile email"
   AUTH0_DOMAIN: "${AUTH0_DOMAIN}"
   AUTH0_AUDIENCE: "${AUTH0_AUDIENCE}" # "fiapx-10soat-g21"
-  APP_BASE_URL: "hackathon-video-service.hackathon.svc.cluster.local"
+  APP_BASE_URL: "http://hackathon-video-service.hackathon.svc.cluster.local"
   API_PORT: "30001"
