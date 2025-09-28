@@ -1,0 +1,23 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: job-checker-role
+  namespace: hackathon
+rules:
+- apiGroups: ["batch"]
+  resources: ["jobs", "cronjobs"] 
+  verbs: ["create", "watch", "list", "get", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: job-checker-role-binding
+  namespace: hackathon
+subjects:
+- kind: ServiceAccount
+  name: job-checker-sa
+  namespace: hackathon
+roleRef:
+  kind: Role
+  name: job-checker-role
+  apiGroup: rbac.authorization.k8s.io

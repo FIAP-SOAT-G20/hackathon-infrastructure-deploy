@@ -1,0 +1,23 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: batch-creator-role
+  namespace: hackathon
+rules:
+- apiGroups: ["batch"]
+  resources: ["jobs", "cronjobs"] 
+  verbs: ["create", "watch", "list", "get", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: default-batch-creator-binding
+  namespace: hackathon
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: hackathon
+roleRef:
+  kind: Role
+  name: batch-creator-role
+  apiGroup: rbac.authorization.k8s.io
