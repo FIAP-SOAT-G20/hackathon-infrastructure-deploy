@@ -81,7 +81,9 @@ jobs:
           DB_PASSWORD: ${{ steps.base64_encode.outputs.db_password }}
           DB_DSN: ${{ steps.base64_encode.outputs.db_dsn }}
           DB_NAME: ${{ secrets.DB_NAME }}
+          AWS_SNS_VIDEO_STATUS_UPDATED_ARN: ${{ secrets.AWS_SNS_VIDEO_STATUS_UPDATED_ARN }}
           AWS_SQS_VIDEO_UPDATED_URL: ${{ secrets.AWS_SQS_VIDEO_UPDATED_URL }}
+          AWS_SQS_VIDEO_UPLOADED_URL: ${{ secrets.AWS_SQS_VIDEO_UPLOADED_URL }}
           AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
           AWS_S3_BUCKET_RAW_FOLDER: ${{ secrets.AWS_S3_BUCKET_RAW_FOLDER }}
           AWS_S3_BUCKET_PROCESSED_FOLDER: ${{ secrets.AWS_S3_BUCKET_PROCESSED_FOLDER }}
@@ -89,6 +91,8 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
           AWS_REGION: ${{ env.AWS_REGION }}
+          AWS_ECR_VIDEO_PROCESSOR_JOB_URL: ${{ secrets.AWS_ECR_VIDEO_PROCESSOR_JOB_URL }}
+          AWS_ECR_JOB_CHECKER_URL: ${{ secrets.AWS_ECR_JOB_CHECKER_URL }}
           CACHE_ENDPOINT: ${{ secrets.CACHE_ENDPOINT }}
           AUTH0_DOMAIN: ${{ secrets.AUTH0_DOMAIN }}
           AUTH0_AUDIENCE: ${{ secrets.AUTH0_AUDIENCE }}
@@ -98,11 +102,13 @@ jobs:
           kubectl apply -f namespace.yaml
           kubectl apply -f configs/video-service-config.yaml
           kubectl apply -f configs/video-manager-config.yaml
+          kubectl apply -f configs/job-starter-service-config.yaml
           kubectl apply -f configs/secrets.yaml
           kubectl apply -f configs/metrics.yaml
           kubectl apply -f services/video-manager/
           kubectl apply -f services/video-service/api/
           kubectl apply -f services/video-service/worker/
+          kubectl apply -f services/job-starter-service/
           kubectl apply -f ingress/ingress.yaml
           kubectl apply -f services/grafana/
           kubectl apply -f services/prometheus/
